@@ -1,21 +1,28 @@
 package com.example.exemplo;
-
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 @RestController
-@RequestMapping("/teste")
 public class AuthenticationLogin {
+  @GetMapping("/privada")
+  public String rotaPrivada() {
 
-  @PostMapping("/retornarUsuario")
-  public String login(@RequestBody @Valid LoginDTO dado) {
-    if (dado.login().equals("alice") && dado.senha().equals("1234")) {
-      return "Usuário logado";
-    }
-    return "não logado";
-
+    RestTemplate restTemplate = new RestTemplate();
+    String url = "https://api.strateegia.digital/users/v1/auth/signin";
+    String[] requestBody = {"alicecavalcanti24@gmail.com", "senha"};
+    HttpHeaders headers = new HttpHeaders();
+    HttpEntity<String[]> requestEntity = new HttpEntity<>(requestBody, headers);
+    ResponseEntity<ResultDTO> responseEntity = restTemplate.postForEntity(url, requestEntity, ResultDTO.class);
+    String resultado =  responseEntity.getBody().accessToken;
+    return "certo";
   }
+  @GetMapping("/publica")
+  public ResponseEntity<String> rotassPrivada() {
+    return ResponseEntity.ok("user Logado");
+  }
+
 
 }
