@@ -1,13 +1,13 @@
 package com.example.exemplo.controller;
 
-import com.example.exemplo.configuration.security.CustomBasicAuthenticationFilter;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/v1/auth")
 public class AuthenticationLogin {
-    CustomBasicAuthenticationFilter customBasicAuthenticationFilter = new CustomBasicAuthenticationFilter();
 
     @PostMapping("/signin")
     public ResponseEntity<String> signin() {
