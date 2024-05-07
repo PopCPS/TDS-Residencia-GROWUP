@@ -8,11 +8,11 @@ import org.springframework.context.annotation.Configuration;
 public class StrateegiaRestTemplateConfiguration {
 
     public static final String STRATEEGIA_REST_TEMPLATE_BEAN = "strateegiaRestTemplateBean";
-
-    @Bean(STRATEEGIA_REST_TEMPLATE_BEAN)
-    public RestTemplateBuilder restTemplate(RestTemplateBuilder builder) {
-        return builder.rootUri("https://api.strateegia.digital/users");
-    }
+//
+//    @Bean(STRATEEGIA_REST_TEMPLATE_BEAN)
+//    public RestTemplateBuilder restTemplate(RestTemplateBuilder builder) {
+//        return builder.rootUri("https://api.strateegia.digital/users");
+//    }
 
 
 }
