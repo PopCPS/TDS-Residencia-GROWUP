@@ -31,9 +31,8 @@ public class WebSecurityConfig {
                 .cors(AbstractHttpConfigurer::disable)
                 .httpBasic(withDefaults())
                 .authorizeHttpRequests(requestMatcherRegistry -> requestMatcherRegistry
-                        .requestMatchers("/signin").permitAll()
-                        .anyRequest().authenticated())
-                .authenticationProvider(strateegiaAuthenticationProvider)
+                        .anyRequest().authenticated()) // requisita autenticação para todas as uris do projeto
+                .authenticationProvider(strateegiaAuthenticationProvider) // define o uso do AuthenticationProvider que nós criamos
                 .build();
 
     }
