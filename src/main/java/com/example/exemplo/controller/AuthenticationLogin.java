@@ -1,4 +1,5 @@
-package com.example.exemplo;
+package com.example.exemplo.controller;
+import com.example.exemplo.configuration.security.CustomBasicAuthenticationFilter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

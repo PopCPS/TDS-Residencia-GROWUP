@@ -1,4 +1,4 @@
-package com.example.exemplo;
+package com.example.exemplo.configuration.security;
 
 import lombok.Data;
 
