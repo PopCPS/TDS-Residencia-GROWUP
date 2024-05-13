@@ -1,5 +1,8 @@
 package com.example.exemplo.controller;
 
+
+import com.example.exemplo.configuration.security.StrateegiaAuthenticationProvider;
+import com.example.exemplo.configuration.strateegia.StrateegiaInMemoryTokenStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,13 +18,17 @@ import static org.springframework.http.HttpStatus.OK;
 @RequestMapping("/v1/auth")
 public class AuthenticationLogin {
 
+
+
     private static final Logger log = LoggerFactory.getLogger(AuthenticationLogin.class);
 
     @PostMapping("/signin")
     @ResponseStatus(OK)
     public String signin(UsernamePasswordAuthenticationToken authentication) {
         log.info("current user is: {}", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-        return "usuário logado é " + authentication.getName();
+        return "O usuário logado é "
+                + authentication.getName()
+                + "\n accessToken: " +  StrateegiaInMemoryTokenStore.getInstance().getTokenStore();
     }
 
 

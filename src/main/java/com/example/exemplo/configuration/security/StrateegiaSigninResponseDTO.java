@@ -1,9 +1,9 @@
 package com.example.exemplo.configuration.security;
 
-import lombok.Data;
 
-@Data
+import lombok.Getter;
+
+@Getter
 public class StrateegiaSigninResponseDTO {
-    String accessToken;
-    String refreshToken;
+    String  accessToken;
 }
