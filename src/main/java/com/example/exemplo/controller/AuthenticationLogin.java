@@ -18,9 +18,13 @@ import static org.springframework.http.HttpStatus.OK;
 @RequestMapping("/v1/auth")
 public class AuthenticationLogin {
 
-
+    private final StrateegiaInMemoryTokenStore tokenStore;
 
     private static final Logger log = LoggerFactory.getLogger(AuthenticationLogin.class);
+
+    public AuthenticationLogin() {
+        this.tokenStore = StrateegiaInMemoryTokenStore.getInstance();
+    }
 
     @PostMapping("/signin")
     @ResponseStatus(OK)
@@ -28,7 +32,7 @@ public class AuthenticationLogin {
         log.info("current user is: {}", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         return "O usuário logado é "
                 + authentication.getName()
-                + "\n accessToken: " +  StrateegiaInMemoryTokenStore.getInstance().getTokenStore();
+                + "\n accessToken: " + tokenStore.getTokenStore().get(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
     }
 
 
