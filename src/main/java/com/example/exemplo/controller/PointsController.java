@@ -1,7 +1,7 @@
 package com.example.exemplo.controller;
 
 import com.example.exemplo.configuration.strateegia.StrateegiaInMemoryTokenStore;
-import com.example.exemplo.controller.dto.response.PaginatedResponse;
+import com.example.exemplo.controller.dto.response.PointsResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,31 +16,29 @@ import org.springframework.web.util.UriComponentsBuilder;
 import static com.example.exemplo.configuration.strateegia.StrateegiaRestTemplateConfiguration.STRATEEGIA_REST_TEMPLATE;
 
 @RestController
-public class JourneysController {
+public class PointsController {
     private final StrateegiaInMemoryTokenStore tokenStore;
 
     private static final Logger log = LoggerFactory.getLogger(JourneysController.class);
 
-
     private final RestTemplate restTemplate;
 
-    public JourneysController(@Qualifier(STRATEEGIA_REST_TEMPLATE) RestTemplate restTemplate) { // @Qualifier serve para especificar qual @Bean importar. Como se fosse, chamar ele por um nome
+    public PointsController(@Qualifier(STRATEEGIA_REST_TEMPLATE) RestTemplate restTemplate) { // @Qualifier serve para especificar qual @Bean importar. Como se fosse, chamar ele por um nome
         this.restTemplate = restTemplate;
         this.tokenStore = StrateegiaInMemoryTokenStore.getInstance();
     }
 
-    @GetMapping("/journeys")
-    public ResponseEntity<PaginatedResponse> getJourneys(
-            @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "5") int size,
-            @RequestParam(value = "sort", defaultValue = "title,DESC") String sort) {
+    @GetMapping("/points")
+    public ResponseEntity<PointsResponse> getPoints(
+            @RequestParam(value = "mapsId", defaultValue = "660572d9feb2310be9fd8c40") String id){
 
-        // Construindo a URI com UriComponentsBuilder
-        String baseUrl = "/projects/v1/project/summary";
+        String baseUrl = "/projects/v1/map/" + id + "/divergence-point";
+
         String url = UriComponentsBuilder.fromUriString(baseUrl)
-                .queryParam("page", page)
-                .queryParam("size", size)
-                .queryParam("sort", sort)
+                .queryParam("page", 0)
+                .queryParam("size", 999)
+                .queryParam("sort", "string")
+                .build()
                 .toUriString();
 
         HttpHeaders headers = new HttpHeaders();
@@ -48,14 +46,16 @@ public class JourneysController {
         headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE); // define o formato de conteúdo da requisição
         HttpEntity httpEntity = new HttpEntity<>(headers);
 
-        try {
-            // Não da para retornar diretamente este responseEntity como retorno do método. Este ResponseEntity é a resposta de outra requisição http.
-            ResponseEntity<PaginatedResponse> responseEntity = restTemplate.exchange(url, HttpMethod.GET, httpEntity, PaginatedResponse.class);
-            // O certo é criar uma nova, mesmo que o tipo do objeto seja o mesmo
+        try{
+            ResponseEntity<PointsResponse> responseEntity = restTemplate.exchange(url, HttpMethod.GET, httpEntity, PointsResponse.class);
             return ResponseEntity.ok(responseEntity.getBody());
-        } catch (Exception e) {
-            log.error("Erro na solicitação das Jornadas", e);
+        }catch (Exception e){
+            log.error("Erro na solicitação dos pontos", e);
             return ResponseEntity.notFound().build();
         }
+
     }
+
+
+
 }

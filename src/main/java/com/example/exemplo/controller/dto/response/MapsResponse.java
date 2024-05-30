@@ -1,4 +1,6 @@
-package com.example.exemplo.controller.dto;
+package com.example.exemplo.controller.dto.response;
+
+import com.example.exemplo.controller.dto.AccessMapsDTO;
 
 import java.util.List;
 
