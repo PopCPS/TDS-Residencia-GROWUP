@@ -30,7 +30,7 @@ public class PointsController {
 
     @GetMapping("/points")
     public ResponseEntity<PointsResponse> getPoints(
-            @RequestParam(value = "mapsId", defaultValue = "660572d9feb2310be9fd8c40") String id){
+            @RequestParam(value = "mapsId") String id){
 
         String baseUrl = "/projects/v1/map/" + id + "/divergence-point";
 
