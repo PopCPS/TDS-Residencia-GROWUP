@@ -4,6 +4,7 @@ import java.util.List;
 
 public class AccessPointsDTO {
     private String id;
+
     private Tool tool = new Tool();
     public AccessPointsDTO() {
     }
