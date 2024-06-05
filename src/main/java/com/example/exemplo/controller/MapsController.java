@@ -16,7 +16,6 @@ public class MapsController {
     public MapsController(MapsService mapsService) {
         this.mapsService = mapsService;
     }
-
     @GetMapping("/maps")
     public ResponseEntity<MapsResponse> getMaps(@RequestParam(value = "journeyId", defaultValue = "660572d9feb2310be9fd8c3f") String id) {
         return mapsService.getMaps(id);

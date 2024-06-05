@@ -3,6 +3,7 @@ package com.example.exemplo.controller;
 import com.example.exemplo.configuration.strateegia.StrateegiaInMemoryTokenStore;
 import com.example.exemplo.controller.dto.response.PointsResponse;
 import com.example.exemplo.controller.dto.response.SummaryResponse;
+import com.example.exemplo.services.SummaryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -18,47 +19,17 @@ import static com.example.exemplo.configuration.strateegia.StrateegiaRestTemplat
 
 @RestController
 public class SummaryController {
-    private final StrateegiaInMemoryTokenStore tokenStore;
 
-    private static final Logger log = LoggerFactory.getLogger(JourneysController.class);
+    public final SummaryService summaryService;
 
-    private RestTemplate restTemplate;
-
-    public SummaryController(@Qualifier(STRATEEGIA_REST_TEMPLATE) RestTemplate restTemplate) { // @Qualifier serve para especificar qual @Bean importar. Como se fosse, chamar ele por um nome
-        this.restTemplate = restTemplate;
-        this.tokenStore = StrateegiaInMemoryTokenStore.getInstance();
+    public SummaryController(SummaryService summaryService) {
+        this.summaryService = summaryService;
     }
+
     @GetMapping("/summary")
     public ResponseEntity<SummaryResponse> getSummary(
             @RequestParam(value = "divergencePointId", defaultValue = "660eacebfeb2310be9fda476") String divergencePointId,
-            @RequestParam(value = "questionId", defaultValue = "ff0bc0c4-bd28-4fcb-b312-1e592c184f16") String questionId
-
-    ){
-
-        String baseUrl = "/projects/v1/divergence-point/" + divergencePointId + "/question/" + questionId + "/gptsummary";
-
-        // Construir a URL usando UriComponentsBuilder
-        String url = UriComponentsBuilder.fromUriString(baseUrl)
-                .queryParam("page", 0)
-                .queryParam("size", 999)
-                .queryParam("sort", "string")
-                .build()
-                .toUriString();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer " + tokenStore.getTokenStore().get(SecurityContextHolder.getContext().getAuthentication().getPrincipal()));
-        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE); // define o formato de conteúdo da requisição
-        HttpEntity httpEntity = new HttpEntity<>(headers);
-
-        try{
-            ResponseEntity<SummaryResponse> responseEntity = restTemplate.exchange(url, HttpMethod.GET, httpEntity, SummaryResponse.class);
-            // O certo é criar uma nova, mesmo que o tipo do objeto seja o mesmo
-            return ResponseEntity.ok(responseEntity.getBody());
-        }catch (Exception e){
-            log.error("Erro na solicitação do resumo", e);
-            return ResponseEntity.notFound().build();
-        }
-
+            @RequestParam(value = "questionId", defaultValue = "ff0bc0c4-bd28-4fcb-b312-1e592c184f16") String questionId) {
+        return summaryService.getSummary(divergencePointId, questionId);
     }
-
 }

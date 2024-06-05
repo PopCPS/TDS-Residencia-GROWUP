@@ -4,20 +4,20 @@ import com.example.exemplo.controller.dto.AccessJourneyDTO;
 
 import java.util.List;
 
-public class PaginatedResponse {
+public class JourneysResponse {
 
     private List<AccessJourneyDTO> content;
     private long totalElements;
 
-    public PaginatedResponse() {
+    public JourneysResponse() {
     }
 
-    public PaginatedResponse(long totalElements, List<AccessJourneyDTO> content) {
+    public JourneysResponse(long totalElements, List<AccessJourneyDTO> content) {
         this.totalElements = totalElements;
         this.content = content;
     }
 
-    public PaginatedResponse(List<AccessJourneyDTO> content) {
+    public JourneysResponse(List<AccessJourneyDTO> content) {
         this.content = content;
     }
 

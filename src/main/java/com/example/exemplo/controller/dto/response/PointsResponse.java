@@ -1,14 +1,11 @@
 package com.example.exemplo.controller.dto.response;
 
-import com.example.exemplo.controller.dto.AccessPointsDTO;
+import com.example.exemplo.controller.dto.AccessPointsDTO.AccessPointsDTO;
 
 import java.util.List;
 
 public class PointsResponse {
-
-
     private List<AccessPointsDTO> content;
-
 
     public PointsResponse() {
     }

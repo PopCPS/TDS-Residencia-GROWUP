@@ -1,22 +1,22 @@
-package com.example.exemplo.controller;
+package com.example.exemplo.services;
 
 import com.example.exemplo.configuration.strateegia.StrateegiaInMemoryTokenStore;
-import com.example.exemplo.controller.dto.response.JourneysResponse;
+import com.example.exemplo.controller.JourneysController;
+import com.example.exemplo.controller.dto.AccessResponsesQuestionDTO.AccessResponsesQuestionDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.*;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import static com.example.exemplo.configuration.strateegia.StrateegiaRestTemplateConfiguration.STRATEEGIA_REST_TEMPLATE;
 
-@RestController
-public class JourneysController {
+@Service
+public class ResponsesQuestionService {
     private final StrateegiaInMemoryTokenStore tokenStore;
 
     private static final Logger log = LoggerFactory.getLogger(JourneysController.class);
@@ -24,24 +24,14 @@ public class JourneysController {
 
     private final RestTemplate restTemplate;
 
-    public JourneysController(@Qualifier(STRATEEGIA_REST_TEMPLATE) RestTemplate restTemplate) { // @Qualifier serve para especificar qual @Bean importar. Como se fosse, chamar ele por um nome
+    public ResponsesQuestionService(@Qualifier(STRATEEGIA_REST_TEMPLATE) RestTemplate restTemplate) { // @Qualifier serve para especificar qual @Bean importar. Como se fosse, chamar ele por um nome
         this.restTemplate = restTemplate;
         this.tokenStore = StrateegiaInMemoryTokenStore.getInstance();
     }
 
-    @GetMapping("/journeys")
-    public ResponseEntity<JourneysResponse> getJourneys(
-            @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "5") int size,
-            @RequestParam(value = "sort", defaultValue = "title,DESC") String sort) {
-
-        // Construindo a URI com UriComponentsBuilder
-        String baseUrl = "/projects/v1/project/summary";
-        String url = UriComponentsBuilder.fromUriString(baseUrl)
-                .queryParam("page", page)
-                .queryParam("size", size)
-                .queryParam("sort", sort)
-                .toUriString();
+    @GetMapping("/responsesQuestion")
+    public ResponseEntity<AccessResponsesQuestionDTO> getResponsesQuestion(String divergenceId, String questionID){
+        String url = "/projects/v1/divergence-point/" + divergenceId+ "/question/" + questionID + "/comment/report";
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + tokenStore.getTokenStore().get(SecurityContextHolder.getContext().getAuthentication().getPrincipal()));
@@ -50,11 +40,11 @@ public class JourneysController {
 
         try {
             // Não da para retornar diretamente este responseEntity como retorno do método. Este ResponseEntity é a resposta de outra requisição http.
-            ResponseEntity<JourneysResponse> responseEntity = restTemplate.exchange(url, HttpMethod.GET, httpEntity, JourneysResponse.class);
+            ResponseEntity<AccessResponsesQuestionDTO> responseEntity = restTemplate.exchange(url, HttpMethod.GET, httpEntity, AccessResponsesQuestionDTO.class);
             // O certo é criar uma nova, mesmo que o tipo do objeto seja o mesmo
             return ResponseEntity.ok(responseEntity.getBody());
         } catch (Exception e) {
-            log.error("Erro na solicitação das Jornadas", e);
+            log.error("Erro na solicitação das respostas das questões", e);
             return ResponseEntity.notFound().build();
         }
     }
