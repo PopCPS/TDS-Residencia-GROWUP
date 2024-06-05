@@ -20,6 +20,8 @@ import java.util.List;
 public class DocxService {
     public final MapsService mapsService;
     public final PointsService pointsServices;
+
+
     private final ResponsesQuestionService responsesQuestionService;
 
     private final SummaryService summaryService;
@@ -31,21 +33,19 @@ public class DocxService {
         this.responsesQuestionService = responsesQuestionService;
         this.summaryService = summaryService;
     }
-
-
+    // O parâmetro pointDivergence representa o número da posição do ponto de divergência que ele deseja gerar o relatório
     public void generateDocx(HttpServletResponse response, String journeyId, String mapId, int pointDivergence) throws IOException {
 
         String tituloJornada = mapsService.getMaps(journeyId).getBody().getTitle();
 
-        int posicaoPointDivergence = pointDivergence;
 
         List<AccessPointsDTO> content =  pointsServices.getPoints(mapId).getBody().getContent();
 
 
-        Tool toll = content.get(0).getTool();
+        Tool toll = content.get(pointDivergence).getTool();
         String tituloPoints = toll.getTitle();
 
-        String divergenceId= content.get(0).getId();
+        String divergenceId= content.get(pointDivergence).getId();
         String questionID;
         String commentsReplies;
         int quantityAnswers;
@@ -97,8 +97,8 @@ public class DocxService {
         try {
             Path imagePath = Paths.get(ClassLoader.getSystemResource("strateegia-destaque.png").toURI());
             imageRun.addPicture(Files.newInputStream(imagePath),
-            XWPFDocument.PICTURE_TYPE_PNG, imagePath.getFileName().toString(),
-            Units.toEMU(50), Units.toEMU(50));
+                    XWPFDocument.PICTURE_TYPE_PNG, imagePath.getFileName().toString(),
+                    Units.toEMU(50), Units.toEMU(50));
             imageRun.addBreak();
         }catch (Exception e){
             log.info(e.getMessage());
@@ -120,11 +120,11 @@ public class DocxService {
         // Loop mostrar todas as questões e seus respectivos resumos do endpoint escolhido
         for (int loopEachQuestionEndpoint = 0; loopEachQuestionEndpoint < toll.getQuestions().size(); loopEachQuestionEndpoint++) {
             String question = toll.getQuestions().get(loopEachQuestionEndpoint).getQuestion();
-            questionID= content.get(0).getTool().getQuestions().get(loopEachQuestionEndpoint).getId();
+            questionID= content.get(pointDivergence).getTool().getQuestions().get(loopEachQuestionEndpoint).getId();
             quantityAnswers = responsesQuestionService.getResponsesQuestion(divergenceId, questionID).getBody().getComments().size();
 
             // Gerar o resumo das questões
-            String summary = summaryService.getSummary(divergenceId, questionID).getBody().getContent().get(0).getSummary();
+            String summary = summaryService.getSummary(divergenceId, questionID).getBody().getContent().get(pointDivergence).getSummary();
 
             XWPFParagraph paragraphSummary = document.createParagraph();
             XWPFRun paragraphSummaryRun = paragraphSummary.createRun();
