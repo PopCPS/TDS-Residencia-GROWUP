@@ -1,7 +1,5 @@
 package com.example.exemplo.controller.dto.AccessPointsDTO;
 
-import java.util.List;
-
 public class AccessPointsDTO {
     private String id;
     private Tool tool;

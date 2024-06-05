@@ -1,9 +1,7 @@
 package com.example.exemplo.services;
 
 import com.example.exemplo.configuration.strateegia.StrateegiaInMemoryTokenStore;
-import com.example.exemplo.controller.JourneysController;
 import com.example.exemplo.controller.dto.response.MapsResponse;
-import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -3,7 +3,6 @@ package com.example.exemplo.services;
 import com.example.exemplo.controller.JourneysController;
 import com.example.exemplo.controller.dto.AccessPointsDTO.AccessPointsDTO;
 import com.example.exemplo.controller.dto.AccessPointsDTO.Tool;
-import com.example.exemplo.controller.dto.response.PointsResponse;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.usermodel.*;
@@ -14,7 +13,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -79,10 +77,11 @@ public class DocxService {
         XWPFParagraph title = document.createParagraph();
         title.setAlignment(ParagraphAlignment.CENTER);
         XWPFRun titleRun = title.createRun();
-        titleRun.setText((" Residência Tecnológica do Porto Digital").toUpperCase());
+        titleRun.setText((" Residência Tecnológica do Porto Digital ").toUpperCase());
         titleRun.addBreak();
         titleRun.setText(("Squad 23").toUpperCase());
         titleRun.addBreak();
+
         titleRun.setFontFamily("Arial");
         titleRun.setFontSize(16);
         titleRun.addBreak();
