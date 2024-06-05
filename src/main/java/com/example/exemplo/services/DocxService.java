@@ -24,14 +24,12 @@ public class DocxService {
 
     private final ResponsesQuestionService responsesQuestionService;
 
-    private final SummaryService summaryService;
     private static final Logger log = LoggerFactory.getLogger(JourneysController.class);
 
-    public DocxService(MapsService mapsService, PointsService pointsService, ResponsesQuestionService responsesQuestionService, SummaryService summaryService){
+    public DocxService(MapsService mapsService, PointsService pointsService, ResponsesQuestionService responsesQuestionService){
         this.mapsService = mapsService;
         this.pointsServices = pointsService;
         this.responsesQuestionService = responsesQuestionService;
-        this.summaryService = summaryService;
     }
     // O parâmetro pointDivergence representa o número da posição do ponto de divergência que ele deseja gerar o relatório
     public void generateDocx(HttpServletResponse response, String journeyId, String mapId, int pointDivergence) throws IOException {
@@ -123,30 +121,6 @@ public class DocxService {
             questionID= content.get(pointDivergence).getTool().getQuestions().get(loopEachQuestionEndpoint).getId();
             quantityAnswers = responsesQuestionService.getResponsesQuestion(divergenceId, questionID).getBody().getComments().size();
 
-            // Gerar o resumo das questões
-            String summary = summaryService.getSummary(divergenceId, questionID).getBody().getContent().get(pointDivergence).getSummary();
-
-            XWPFParagraph paragraphSummary = document.createParagraph();
-            XWPFRun paragraphSummaryRun = paragraphSummary.createRun();
-            String prefix = "RESUMO: ";
-            paragraphSummaryRun.setText(prefix + summary);
-
-            paragraphSummary.setIndentationLeft(410);
-            paragraphSummaryRun.setFontFamily("Arial");
-            paragraphSummaryRun.setFontSize(12);
-            paragraphSummary.setAlignment(ParagraphAlignment.BOTH);
-            paragraphSummaryRun.addBreak();
-
-            // Gerar as questões do endpoint
-            XWPFParagraph paragraphQuestion = document.createParagraph();
-            XWPFRun paragraphQuestionRun = paragraphQuestion.createRun();
-            paragraphQuestionRun.setText(question);
-
-            paragraphQuestion.setIndentationLeft(410);
-            paragraphQuestionRun.setBold(true);
-            paragraphQuestionRun.setFontFamily("Arial");
-            paragraphQuestionRun.setFontSize(12);
-            paragraphQuestionRun.addBreak();
 
 
             // Loop para pegar todas as respostas de cada pergunta do endpoint
