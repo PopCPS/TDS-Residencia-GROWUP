@@ -6,7 +6,7 @@ inteligências individuais, sociais e artificiais. Desse forma, isso gera a nece
 de extrair dados das discussões para criar um relatório que permita analisar as divergências
 nos debates.
 
-# Gerador de PDF
+# Baixe o relatório dos seus debates
 
 ## Instalação do sistema
 
