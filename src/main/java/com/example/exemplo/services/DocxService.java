@@ -30,6 +30,7 @@ public class DocxService {
         this.mapsService = mapsService;
         this.pointsServices = pointsService;
         this.responsesQuestionService = responsesQuestionService;
+
     }
     // O parâmetro pointDivergence representa o número da posição do ponto de divergência que ele deseja gerar o relatório
     public void generateDocx(HttpServletResponse response, String journeyId, String mapId, int pointDivergence) throws IOException {
@@ -121,6 +122,18 @@ public class DocxService {
             questionID= content.get(pointDivergence).getTool().getQuestions().get(loopEachQuestionEndpoint).getId();
             quantityAnswers = responsesQuestionService.getResponsesQuestion(divergenceId, questionID).getBody().getComments().size();
 
+
+
+            // Gerar as questões do endpoint
+            XWPFParagraph paragraphQuestion = document.createParagraph();
+            XWPFRun paragraphQuestionRun = paragraphQuestion.createRun();
+            paragraphQuestionRun.setText(question);
+
+            paragraphQuestion.setIndentationLeft(410);
+            paragraphQuestionRun.setBold(true);
+            paragraphQuestionRun.setFontFamily("Arial");
+            paragraphQuestionRun.setFontSize(12);
+            paragraphQuestionRun.addBreak();
 
 
             // Loop para pegar todas as respostas de cada pergunta do endpoint
