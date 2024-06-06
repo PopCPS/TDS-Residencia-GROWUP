@@ -24,14 +24,13 @@ public class DocxService {
 
     private final ResponsesQuestionService responsesQuestionService;
 
-    private final SummaryService summaryService;
     private static final Logger log = LoggerFactory.getLogger(JourneysController.class);
 
-    public DocxService(MapsService mapsService, PointsService pointsService, ResponsesQuestionService responsesQuestionService, SummaryService summaryService){
+    public DocxService(MapsService mapsService, PointsService pointsService, ResponsesQuestionService responsesQuestionService){
         this.mapsService = mapsService;
         this.pointsServices = pointsService;
         this.responsesQuestionService = responsesQuestionService;
-        this.summaryService = summaryService;
+
     }
     // O parâmetro pointDivergence representa o número da posição do ponto de divergência que ele deseja gerar o relatório
     public void generateDocx(HttpServletResponse response, String journeyId, String mapId, int pointDivergence) throws IOException {
