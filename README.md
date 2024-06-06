@@ -18,7 +18,7 @@ nos debates.
 
 4 - Baixe uma ferramenta para testes de requisições HTTP. Sugestão: Httpie ou postman
 
-5 - Faça uma conta no strateegia para conseguir logar na aplicação.
+5 - Faça uma conta no strateegia e use o mesmo login e senha de lá para logar na nossa aplicação.
 
 ## Baixe o relatório do debate escolhido
 
