@@ -4,10 +4,10 @@
 # Sobre nós
 
 Somos o squad 23 da Residência do Porto digital. Realizamos essa solução para melhoria
-da plataforma Strateegia. A plataforma Strateegia busca promover colaboração entre 
-inteligências individuais, sociais e artificiais. Desse forma, isso gera a necessidade 
-de extrair dados das discussões para criar um relatório que permita analisar as divergências
-nos debates.
+da plataforma Strateegia. O Strateegia é uma plataforma criada pela empresa TDS que busca promover 
+a colaboração entre um grupo/equipe através de debates. Você pode criar jornadas, mapas e pontos de 
+divergência para ter debates importantes e aumentar a produtividade. Dessa forma, surge a necessidade
+de extrair os dados das discussões para criar um relatório que permita analisar as divergências nos debates. 
 
 # Baixe o relatório dos seus debates
 
